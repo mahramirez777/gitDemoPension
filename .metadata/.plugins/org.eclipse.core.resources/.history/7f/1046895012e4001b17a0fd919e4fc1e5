@@ -1,0 +1,102 @@
+/**
+ * 
+ */
+package com.examenUPAX.demoPension.rest;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.examenUPAX.demoPension.dao.BitacoraDAO;
+import com.examenUPAX.demoPension.model.Bitacora;
+
+/**
+ * @author Marco Antonio
+ *
+ */
+@RestController
+@RequestMapping("bitacora")
+public class BitacoraRest {
+	@Autowired
+	BitacoraDAO bitacoraDAO;
+	
+	@PostMapping("/alta")
+	public void alta (@RequestBody Bitacora bitacora) {
+		bitacora.setFechaEntrada(new Date());
+		bitacora.setFechaRegistro(new Date());
+		bitacora.setFechaUltModificacion(new Date());
+		bitacora.getAuto().setFechaRegistro(new Date());
+		bitacora.getAuto().setFechaUltModificacion(new Date());
+		
+		bitacoraDAO.save(bitacora);
+	}
+	
+	@PutMapping("/modificar")
+	public void modificar (@RequestBody Bitacora bitacora) {
+		bitacora.setFechaUltModificacion(new Date());
+		bitacora.getAuto().setFechaUltModificacion(new Date());
+		
+		bitacoraDAO.save(bitacora);
+	}
+
+	@DeleteMapping("/eliminar")
+	public void eliminar (@RequestBody Bitacora bitacora) {
+		bitacoraDAO.delete(bitacora);
+	}
+	
+	@DeleteMapping("/eliminarPorId/{id}")
+	public void eliminarPorId (@PathVariable ("id") Long id) {
+		bitacoraDAO.deleteById(id);
+	}
+	
+	@GetMapping("/consultarPorId/{id}")
+	public Bitacora consultarPorId (@PathVariable ("id") Long id) {
+		Optional<Bitacora> bitacora1 = bitacoraDAO.findById(id);
+		
+		Bitacora bitacora2 = bitacora1.get();
+		
+		return bitacora2;
+	}
+	
+	@GetMapping("/consultarTodo")
+	public List <Bitacora> consultarTodo () {
+		return bitacoraDAO.findAll();
+	}
+	
+	@PutMapping("/generarPagoPorId/{id}")
+	public BigDecimal generarPagoPorId  (@PathVariable ("id") Long id) {
+		BigDecimal pago = BigDecimal.ZERO;
+		Optional<Bitacora> bitacora = bitacoraDAO.findById(id);
+		
+		if (bitacora.isPresent()) {
+			bitacora.get();
+		}
+		
+		return pago;
+	}
+	
+	@PutMapping("/generarPagoPorPlaca/{placa}")
+	public BigDecimal generarPagoPorPlaca  (@PathVariable ("placa") String placa) {
+		BigDecimal pago = BigDecimal.ZERO;
+		/*Bitacora bitacora;
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Bitacora");
+		EntityManager em = emf.createEntityManager();
+		
+		TypedQuery<Bitacora> bitacoras = em.createNamedQuery("consultarPagoPorPlaca", Bitacora.class);
+		bitacoras.setParameter("placa", placa);
+		bitacora= bitacoras.getSingleResult();*/
+		
+		return pago;
+	}
+}

@@ -1,0 +1,16 @@
+/**
+ * 
+ */
+package com.examenUPAX.demoPension.DAO;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.examenUPAX.demoPension.model.Bitacora;
+
+/**
+ * @author Marco Antonio
+ *
+ */
+public interface BitacoraDAO extends JpaRepository<Bitacora, Long> {
+
+}

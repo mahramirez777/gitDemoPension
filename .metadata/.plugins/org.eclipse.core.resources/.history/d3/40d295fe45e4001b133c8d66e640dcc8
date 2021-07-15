@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+package com.examenUPAX.demoPension.dao;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+
+import com.examenUPAX.demoPension.model.Auto;
+
+/**
+ * @author Marco Antonio
+ *
+ */
+public interface AutoDAO extends JpaRepository<Auto, Long>,  JpaSpecificationExecutor<Auto> {
+    @Query(nativeQuery = false,value = " SELECT a FROM auto a WHERE placa = ?1")
+	List <Auto> consultarPorPlaca (String placa);
+}
